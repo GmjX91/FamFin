@@ -1,281 +1,162 @@
-# Personal Finance Tools - Modern Web Application
+# FamFin — Household Finance App
 
-A full-stack web application for managing personal finances, built with Spring Boot (backend) and React (frontend).
+A full-stack web application for managing household finances, built with Spring Boot and React.
 
 ## Features
 
 ### 📋 Bills Tracker
-- ✨ Add, view, and delete monthly bills
-- 📊 Real-time statistics (total, average, count)
-- 💾 Persistent storage with H2 database
-- 🎨 Modern, responsive UI
-- ⚡ Fast and reactive user experience
+- Add, view, and delete monthly bills
+- Categorize bills (Housing, Utilities, Subscriptions, Transportation, Insurance, Food & Groceries, Other)
+- Real-time summary statistics (total, average, count)
+- Input validation with amount caps and name length limits
+
+### 💸 Income-Proportional Bill Split
+- Enter monthly incomes for two people
+- Auto-fills from Pay Calculator results
+- Visual percentage bar showing income split
+- Per-bill breakdown table with each person's share
+- Rounding toggle for clean dollar amounts
 
 ### 💰 Pay Calculator
-- 💵 Calculate take-home pay from hourly rate or yearly salary
-- 📈 Comprehensive breakdown (weekly, biweekly, monthly, yearly)
-- 🧾 Tax estimation (Federal, State, Social Security, Medicare)
-- 🔄 Toggle between hourly and salary calculations
-- 📱 Real-time calculations
+- Calculate take-home pay from hourly rate or yearly salary
+- Person 1 and Person 2 support
+- Tax estimation (Federal, State, Social Security, Medicare)
+- Paycheck stub breakdown by pay period
+- 50/30/20 budget recommendation
+- Input caps ($10,000/hr, $10M salary)
 
-## Technology Stack
+### 🎯 Savings Goals
+- Set a savings goal with timeframe and interest rate
+- Monthly contribution calculator
+- Interactive growth projection chart with tooltips
+- Two modes: Goal Calculator and Growth Projector
 
-### Backend
-- **Spring Boot 3.2.3** - Java web framework
-- **Spring Data JPA** - Database persistence
-- **H2 Database** - In-memory database
-- **Maven** - Build tool
+### 🏠 Household Dashboard
+- Combined income overview with percentage bar
+- Bills & responsibilities split view
+- Donut chart showing spending by category
+- 50/30/20 budget per person with bills deducted
+- Savings goal contribution split
+- Financial health indicators (green/yellow/red)
 
-### Frontend
-- **React 18** - UI library
-- **Vite** - Build tool and dev server
-- **Axios** - HTTP client
-- **CSS3** - Styling
+### 🌙 Dark Mode
+- Toggle between light and dark themes
+- Persists across sessions via localStorage
+- Full theming with CSS custom properties
+
+## Tech Stack
+
+**Backend:** Spring Boot 3.2.3, Spring Data JPA, H2 Database, Maven
+
+**Frontend:** React 18, Vite, Axios, CSS3
 
 ## Prerequisites
 
-Before running this application, ensure you have the following installed:
+- **Java 17+** — `java -version`
+- **Node.js 18+** — `node -version`
 
-1. **Java 17 or higher**
-   ```bash
-   java -version
-   ```
-
-2. **Maven** (or use the Maven wrapper included with Spring Boot)
-   ```bash
-   mvn -version
-   ```
-
-3. **Node.js 18+ and npm** (for the frontend)
-   ```bash
-   node -version
-   npm -version
-   ```
-
-### Installing Node.js on macOS
-
-If Node.js is not installed, you can install it using Homebrew:
+## Quick Start
 
 ```bash
-# Install Homebrew (if not already installed)
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# Clone the repo
+git clone https://github.com/GmjX91/FamFin.git
+cd FamFin
 
-# Install Node.js
-brew install node
-
-# Verify installation
-node -version
-npm -version
-```
-
-Alternatively, download from [nodejs.org](https://nodejs.org/)
-
-## Getting Started
-
-### 1. Clone or Navigate to the Project
-
-```bash
-cd /Users/georgemathis/IdeaProjects/HelloWorld
-```
-
-### 2. Start the Backend (Spring Boot)
-
-Open a terminal and run:
-
-```bash
-# Using Maven wrapper (recommended)
+# Start the backend
 ./mvnw spring-boot:run
 
-# Or using installed Maven
-mvn spring-boot:run
-```
-
-The backend will start on `http://localhost:8080`
-
-You can verify it's running by visiting:
-- API: http://localhost:8080/api/bills
-- H2 Console: http://localhost:8080/h2-console (JDBC URL: jdbc:h2:mem:billsdb)
-
-### 3. Start the Frontend (React)
-
-Open a **new terminal** window and run:
-
-```bash
-# Navigate to frontend directory
+# In a new terminal — start the frontend
 cd frontend
-
-# Install dependencies (first time only)
 npm install
-
-# Start the development server
 npm run dev
 ```
 
-The frontend will start on `http://localhost:3000`
-
-### 4. Open the Application
-
-Open your browser and navigate to:
-```
-http://localhost:3000
+Or use the included script:
+```bash
+./start.sh
 ```
 
-## Usage
-
-### Bills Tracker
-1. **Add a Bill**: Enter the bill name and amount, then click "Add Bill"
-2. **View Bills**: All bills are displayed in a table with name, amount, and date
-3. **View Summary**: See total bills, average amount, and bill count
-4. **Delete a Bill**: Click the delete button next to any bill
-
-### Pay Calculator
-1. **Choose Calculation Type**: Select either "Hourly Rate" or "Yearly Salary"
-2. **Enter Amount**: Input your hourly wage or annual salary
-3. **Calculate**: Click the calculate button to see your pay breakdown
-4. **View Results**: See detailed breakdown by pay period with gross and net amounts
-5. **Reset**: Click reset to start a new calculation
+- **Backend:** http://localhost:8080
+- **Frontend:** http://localhost:3000
+- **H2 Console:** http://localhost:8080/h2-console (JDBC URL: `jdbc:h2:mem:billsdb`, user: `sa`, no password)
 
 ## API Endpoints
 
-The backend exposes the following REST API endpoints:
-
-### Bills Tracker Endpoints
+### Bills
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/api/bills` | Get all bills |
-| POST | `/api/bills` | Create a new bill |
-| GET | `/api/bills/{id}` | Get a bill by ID |
+| POST | `/api/bills` | Create a bill (`name`, `amount`, `category`) |
+| GET | `/api/bills/{id}` | Get bill by ID |
 | DELETE | `/api/bills/{id}` | Delete a bill |
-| GET | `/api/bills/summary` | Get statistics summary |
+| GET | `/api/bills/summary` | Get summary (total, average, count) |
 
-### Pay Calculator Endpoints
+### Pay Calculator
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| POST | `/api/pay-calculator/from-hourly` | Calculate pay from hourly rate |
-| POST | `/api/pay-calculator/from-yearly` | Calculate pay from yearly salary |
+| POST | `/api/pay-calculator/from-hourly` | Calculate from `hourlyRate` |
+| POST | `/api/pay-calculator/from-yearly` | Calculate from `yearlySalary` |
 
-### Example API Requests
-
-**Create a bill:**
-```bash
-curl -X POST http://localhost:8080/api/bills \
-  -H "Content-Type: application/json" \
-  -d '{"name": "Electric Bill", "amount": 120.50}'
-```
-
-**Get all bills:**
-```bash
-curl http://localhost:8080/api/bills
-```
-
-**Get summary:**
-```bash
-curl http://localhost:8080/api/bills/summary
-```
-
-**Calculate pay from hourly rate:**
-```bash
-curl -X POST http://localhost:8080/api/pay-calculator/from-hourly \
-  -H "Content-Type: application/json" \
-  -d '{"hourlyRate": 25.00}'
-```
-
-**Calculate pay from yearly salary:**
-```bash
-curl -X POST http://localhost:8080/api/pay-calculator/from-yearly \
-  -H "Content-Type: application/json" \
-  -d '{"yearlySalary": 52000}'
-```
+### Savings Calculator
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/api/savings-calculator/calculate` | Calculate monthly contribution |
+| POST | `/api/savings-calculator/project-growth` | Monthly growth projections |
 
 ## Project Structure
 
 ```
-HelloWorld/
-├── pom.xml                                 # Maven configuration
-├── src/
-│   └── main/
-│       ├── java/com/billstracker/
-│       │   ├── BillsTrackerApplication.java    # Main Spring Boot app
-│       │   ├── model/
-│       │   │   ├── Bill.java                   # Bill entity
-│       │   │   └── BillSummary.java            # Summary DTO
-│       │   ├── repository/
-│       │   │   └── BillRepository.java         # Database repository
-│       │   ├── service/
-│       │   │   └── BillService.java            # Business logic
-│       │   └── controller/
-│       │       └── BillController.java         # REST endpoints
-│       └── resources/
-│           └── application.properties          # App configuration
+FamFin/
+├── pom.xml
+├── mvnw
+├── start.sh
+├── src/main/java/com/billstracker/
+│   ├── BillsTrackerApplication.java
+│   ├── controller/
+│   │   ├── BillController.java
+│   │   ├── PayCalculatorController.java
+│   │   └── SavingsCalculatorController.java
+│   ├── model/
+│   │   ├── Bill.java
+│   │   ├── BillSummary.java
+│   │   ├── PayCalculation.java
+│   │   ├── SavingsCalculation.java
+│   │   └── MonthlyProjection.java
+│   ├── repository/
+│   │   └── BillRepository.java
+│   └── service/
+│       ├── BillService.java
+│       ├── PayCalculatorService.java
+│       └── SavingsCalculatorService.java
+├── src/main/resources/
+│   └── application.properties
 └── frontend/
-    ├── package.json                        # NPM dependencies
-    ├── vite.config.js                      # Vite configuration
-    ├── index.html                          # HTML template
+    ├── package.json
+    ├── vite.config.js
+    ├── index.html
     └── src/
-        ├── main.jsx                        # React entry point
-        ├── App.jsx                         # Main App component
-        ├── App.css                         # Global styles
+        ├── main.jsx
+        ├── App.jsx
+        ├── App.css
         ├── components/
-        │   ├── BillForm.jsx                # Add bill form
-        │   ├── BillList.jsx                # Bills table
-        │   └── BillSummary.jsx             # Statistics cards
+        │   ├── BillForm.jsx
+        │   ├── BillList.jsx
+        │   ├── BillSplit.jsx
+        │   ├── BillSummary.jsx
+        │   ├── HouseholdDashboard.jsx
+        │   ├── PayCalculator.jsx
+        │   └── SavingsCalculator.jsx
         └── services/
-            └── api.js                      # API client
-```
-
-## Development
-
-### Backend Development
-
-The backend uses Spring Boot DevTools for hot reloading. Changes to Java files will automatically restart the application.
-
-To rebuild without running:
-```bash
-mvn clean package
-```
-
-### Frontend Development
-
-Vite provides hot module replacement (HMR). Changes to React components will update instantly in the browser.
-
-To build for production:
-```bash
-cd frontend
-npm run build
+            ├── api.js
+            ├── payCalculatorApi.js
+            └── savingsApi.js
 ```
 
 ## Troubleshooting
 
-### Backend won't start
-- Ensure Java 17+ is installed: `java -version`
-- Check if port 8080 is already in use
-- Look for errors in the Maven output
-
-### Frontend won't start
-- Ensure Node.js is installed: `node -version`
-- Delete `node_modules` and `package-lock.json`, then run `npm install` again
-- Check if port 3000 is already in use
-
-### Frontend can't connect to backend
-- Ensure the backend is running on port 8080
-- Check browser console for CORS errors
-- Verify the API URL in `frontend/src/services/api.js`
-
-### Database issues
-- The H2 database is in-memory, so data is lost when the backend stops
-- Access H2 console at http://localhost:8080/h2-console
-- JDBC URL: `jdbc:h2:mem:billsdb`, username: `sa`, password: (leave empty)
-
-## Future Enhancements
-
-- [ ] Persistent database (PostgreSQL/MySQL)
-- [ ] User authentication
-- [ ] Monthly/yearly bill tracking
-- [ ] Bill categories
-- [ ] Data visualization with charts
-- [ ] Export to CSV/PDF
-- [ ] Bill due dates and reminders
-- [ ] Multi-currency support
+- **Port in use:** `lsof -ti:8080 | xargs kill -9` or `lsof -ti:3000 | xargs kill -9`
+- **Frontend can't connect:** Make sure backend is running on 8080; check CORS in browser console
+- **Data lost on restart:** H2 is in-memory by default — data resets when the backend stops
 
 ## License
 
@@ -283,4 +164,4 @@ This project is for educational purposes.
 
 ## Author
 
-Built with Spring Boot & React
+Built by George Mathis
