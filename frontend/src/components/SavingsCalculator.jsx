@@ -62,7 +62,8 @@ function SavingsCalculator({ onResultChange }) {
       setGoalResult(calculationResult);
       if (onResultChange) onResultChange(calculationResult);
     } catch (err) {
-      setError(err.response?.data || 'Failed to calculate. Please try again.');
+      const msg = err.response?.data;
+      setError(typeof msg === 'string' ? msg : 'Failed to calculate. Please try again.');
     } finally {
       setIsCalculating(false);
     }
@@ -101,20 +102,26 @@ function SavingsCalculator({ onResultChange }) {
     setIsCalculating(true);
     try {
       const projections = await savingsAPI.projectGrowth(contrib, months, current, interest);
+      if (!projections || projections.length === 0) {
+        setError('No projection data returned. Please try again.');
+        return;
+      }
+      const lastProjection = projections[projections.length - 1];
       const contribData = {
         projections,
         monthlyContribution: contrib,
         timeframeMonths: months,
         currentSavings: current,
         interestRate: interest,
-        finalBalance: projections[projections.length - 1].balance,
+        finalBalance: lastProjection.balance,
         totalContributed: contrib * months,
-        totalInterest: projections[projections.length - 1].balance - current - (contrib * months)
+        totalInterest: lastProjection.balance - current - (contrib * months)
       };
       setContribResult(contribData);
       if (onResultChange) onResultChange(contribData);
     } catch (err) {
-      setError(err.response?.data || 'Failed to calculate. Please try again.');
+      const msg = err.response?.data;
+      setError(typeof msg === 'string' ? msg : 'Failed to calculate. Please try again.');
     } finally {
       setIsCalculating(false);
     }

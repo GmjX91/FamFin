@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/bills")
@@ -43,8 +44,12 @@ public class BillController {
     
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBill(@PathVariable Long id) {
-        billService.deleteBill(id);
-        return ResponseEntity.noContent().build();
+        try {
+            billService.deleteBill(id);
+            return ResponseEntity.noContent().build();
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
     
     @GetMapping("/summary")

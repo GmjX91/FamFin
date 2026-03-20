@@ -53,7 +53,8 @@ function PayCalculator({ onResult1Change, onResult2Change }) {
       setResult(calculationResult);
       if (onResult1Change) onResult1Change(calculationResult);
     } catch (err) {
-      setError(err.response?.data || 'Failed to calculate. Please try again.');
+      const msg = err.response?.data;
+      setError(typeof msg === 'string' ? msg : 'Failed to calculate. Please try again.');
     } finally {
       setIsCalculating(false);
     }
@@ -89,7 +90,8 @@ function PayCalculator({ onResult1Change, onResult2Change }) {
       setResult2(calculationResult);
       if (onResult2Change) onResult2Change(calculationResult);
     } catch (err) {
-      setError2(err.response?.data || 'Failed to calculate. Please try again.');
+      const msg = err.response?.data;
+      setError2(typeof msg === 'string' ? msg : 'Failed to calculate. Please try again.');
     } finally {
       setIsCalculating2(false);
     }

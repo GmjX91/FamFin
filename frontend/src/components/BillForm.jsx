@@ -39,7 +39,8 @@ function BillForm({ onBillAdded }) {
       setAmount('');
       setCategory('Other');
     } catch (err) {
-      setError(err.response?.data || 'Failed to add bill');
+      const msg = err.response?.data;
+      setError(typeof msg === 'string' ? msg : 'Failed to add bill');
     } finally {
       setIsSubmitting(false);
     }

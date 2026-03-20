@@ -9,12 +9,12 @@ function BillSummary({ summary }) {
       <div className="summary-cards">
         <div className="summary-card">
           <div className="summary-label">Total Bills</div>
-          <div className="summary-value">${summary.total.toFixed(2)}</div>
+          <div className="summary-value">${(summary.total ?? 0).toFixed(2)}</div>
         </div>
         
         <div className="summary-card">
           <div className="summary-label">Average Bill</div>
-          <div className="summary-value">${summary.average.toFixed(2)}</div>
+          <div className="summary-value">${(summary.average ?? 0).toFixed(2)}</div>
         </div>
         
         <div className="summary-card">
