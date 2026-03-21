@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -28,13 +29,16 @@ public class BillService {
         if (bill.getName() == null || bill.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Bill name cannot be empty");
         }
-        if (bill.getAmount() == null || bill.getAmount() < 0) {
+        if (bill.getAmount() == null || bill.getAmount() <= 0) {
             throw new IllegalArgumentException("Bill amount must be a positive number");
         }
         return billRepository.save(bill);
     }
     
     public void deleteBill(Long id) {
+        if (!billRepository.existsById(id)) {
+            throw new NoSuchElementException("Bill not found with id: " + id);
+        }
         billRepository.deleteById(id);
     }
     

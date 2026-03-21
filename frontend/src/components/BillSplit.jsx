@@ -13,7 +13,7 @@ function BillSplit({ bills, summary, incomes, onIncomeChange, payCalcResult1, pa
     } else {
       setAutoFilled1(false);
     }
-  }, [payCalcResult1]);
+  }, [payCalcResult1, onIncomeChange]);
 
   // Auto-populate Person 2 income from Pay Calculator result
   useEffect(() => {
@@ -23,7 +23,7 @@ function BillSplit({ bills, summary, incomes, onIncomeChange, payCalcResult1, pa
     } else {
       setAutoFilled2(false);
     }
-  }, [payCalcResult2]);
+  }, [payCalcResult2, onIncomeChange]);
 
   const inc1 = parseFloat(incomes.person1) || 0;
   const inc2 = parseFloat(incomes.person2) || 0;
